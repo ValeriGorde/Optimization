@@ -1,0 +1,213 @@
+﻿<Window x:Class="Optimization.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Optimization"
+        mc:Ignorable="d"
+        Title="Программный комплекс для решения задач оптимизации" Height="650" Width="990">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.12*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" HorizontalAlignment="Left">
+
+            <ToolBarTray>
+                <ToolBar Width="990">
+                    <Button Content="{materialDesign:PackIcon Kind=InformationOutline}"/>
+                    <Separator/>
+                    <Button Content="{materialDesign:PackIcon Kind=ContentSaveCog}" />
+                    <Separator/>
+                    <Button Content="Описание задания"/>
+                </ToolBar>
+            </ToolBarTray>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.6*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="1.5*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" >
+                    <GroupBox Header="Выбор метода" materialDesign:ElevationAssist.Elevation="Dp6" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Метод:" Margin="20 0"/>
+                            <ComboBox Width="250"/>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <GroupBox Header="Ограничениe первого рода" materialDesign:ElevationAssist.Elevation="Dp6" BorderThickness="0">
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Min L:" Margin="30 0 10 0"/>
+                                        <TextBox Width="100"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Column="1" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Max L:" Margin="20 0 10 0"/>
+                                        <TextBox Width="100"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Min S:" Margin="30 0 10 0"/>
+                                        <TextBox Width="100"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Column="1" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Max S:" Margin="20 0 10 0"/>
+                                        <TextBox Width="100"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Grid Grid.Row="1">
+                        <GroupBox Header="Ограничение второго рода" materialDesign:ElevationAssist.Elevation="Dp6" BorderThickness="0">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="L+S >= (м)" Margin="30 0 10 0"/>
+                                <TextBox HorizontalAlignment="Left" Width="150"/>
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="3">
+                    <GroupBox Header="Точность вычисления" materialDesign:ElevationAssist.Elevation="Dp6" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Погрешность:" Margin="20 0 10 0"/>
+                            <TextBox Width="150"/>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+
+                <Grid Grid.Row="4" >
+                    <GroupBox  materialDesign:ColorZoneAssist.Mode="SecondaryMid" Header="Результаты" materialDesign:ElevationAssist.Elevation="Dp6" BorderThickness="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="Длина теплоообменного устройства, м:" Margin="20 0 10 0"/>
+                                <TextBox Width="120"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="center">
+                                <TextBlock Text="Ширина теплоообменного устройства, м:" Margin="20 0 10 0"/>
+                                <TextBox Width="120"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="center">
+                                <TextBlock Text="Минимальные затраты на изделие, y.e.:" Margin="20 0 10 0"/>
+                                <TextBox Width="120"/>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Column="1" Margin="10 0">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Border BorderThickness="2" BorderBrush="#9B8BBB">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="Математическая модель: " FontWeight="Bold" FontSize="13" Margin="20 0"/>
+                                <Image Source="/formula.png"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Row="1" Margin="0 10 0 0">
+                        <Border BorderThickness="2" BorderBrush="#9B8BBB">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.09*"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Text="Таблица значений:" FontWeight="Bold" FontSize="13" Margin="20 0"/>
+
+                                <DataGrid Grid.Row="1" Margin="10">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Длина теплообменника"/>
+                                        <DataGridTextColumn Header="Ширина теплоообменника"/>
+                                        <DataGridTextColumn Header="Себестоимость изделия"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Row="2">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="График 2D" Margin="15 0" Width="140"/>
+                            <Separator/>
+                            <Button Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="График 3D" Width="140"/>
+                            <Separator/>
+                            <Button Content="Рассчитать" Width="210" Style="{StaticResource MaterialDesignRaisedButton}" Margin="50 0"/>
+                        </StackPanel>
+
+                    </Grid>
+                </Grid>
+
+            </Grid>
+        </Grid>
+
+
+
+    </Grid>
+</Window>
