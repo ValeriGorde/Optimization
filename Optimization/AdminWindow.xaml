@@ -1,0 +1,83 @@
+﻿<Window x:Class="Optimization.AdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Optimization"
+        mc:Ignorable="d"
+        Title="Кабинет администратора" Height="600" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition MaxHeight="60"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" VerticalAlignment="Top" Style="{DynamicResource MaterialDesignHeadline5TextBlock}" FontWeight="Bold" Text="Кабинет администратора"/>
+                <Button Command="{Binding Exit}" Grid.Column="1" Style="{DynamicResource MaterialDesignFlatLightButton}" Content="Выход"  Width="80" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+            </Grid>
+
+            <Grid Row="1">
+                <TabControl >
+                    <TabItem Header="Пользователи">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.8*"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <DataGrid AutoGenerateColumns="False" IsReadOnly="True" SelectedItem="{Binding SelectedAccount}" ItemsSource= "{Binding Account}" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Id}" Header="ID" Width="SizeToHeader" />
+                                    <DataGridTextColumn Binding="{Binding Login}" Header="Логин" Width="110"/>
+                                    <DataGridTextColumn Binding="{Binding Password}" Header="Пароль" Width="110"/>
+                                    <DataGridTextColumn Binding="{Binding Role}" Header="Роль" Width="110"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                    <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Логин:" />
+                                    <TextBox Text="{Binding NewLogin}" Margin="10 10 10 0" Width="140" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                    <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Пароль:" />
+                                    <TextBox Text="{Binding NewPassword}" Margin="10 10 10 0" Width="130" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                    <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Роль:" />
+                                    <ComboBox SelectedItem="{Binding NewRole}" ItemsSource="{Binding Roles}" Margin="10 10 10 0" Width="150" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Command="{Binding AddAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Добавить"  Height="32" Width="150" Cursor="Hand"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Command="{Binding UpdateAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Изменить" Height="32" Width="150" Cursor="Hand"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Command="{Binding RemoveAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Удалить" Height="32" Width="150" Cursor="Hand"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

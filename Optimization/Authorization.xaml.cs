@@ -11,20 +11,25 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Optimization
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Логика взаимодействия для Authorization.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Authorization : Window
     {
-        public MainWindow()
+        public Authorization()
         {
             InitializeComponent();
-            //DataContext = new MainWindowVM();
+            this.DataContext = new AuthorizationVM(this);
+        }
+
+        private void passwordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            //это позволяет передать пароль во viewModel
+            ((dynamic)this.DataContext).Password = ((PasswordBox)sender).Password;
         }
     }
 }

@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Optimization"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"    
         Title="Программный комплекс для решения задач оптимизации" Height="650" Width="990">
     <Grid>
         <Grid.RowDefinitions>
@@ -17,11 +18,12 @@
 
             <ToolBarTray>
                 <ToolBar Width="990">
-                    <Button Content="{materialDesign:PackIcon Kind=InformationOutline}"/>
+                    <Button Command="{Binding About}" Content="{materialDesign:PackIcon Kind=InformationOutline}"/>
                     <Separator/>
                     <Button Content="{materialDesign:PackIcon Kind=ContentSaveCog}" />
                     <Separator/>
-                    <Button Content="Описание задания"/>
+                    <Button Command="{Binding TaskDescription}" Content="Описание задания"/>
+                    <Button Content="Выход" Command="{Binding Exit}"/>
                 </ToolBar>
             </ToolBarTray>
         </Grid>
@@ -45,7 +47,7 @@
                     <GroupBox Header="Выбор метода" materialDesign:ElevationAssist.Elevation="Dp6" BorderThickness="0">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock Text="Метод:" Margin="20 0"/>
-                            <ComboBox Width="250"/>
+                            <ComboBox SelectedItem="{Binding CurrentMethod}" ItemsSource="{Binding Methods}" Width="250"/>
                         </StackPanel>
                     </GroupBox>
                 </Grid>
@@ -181,7 +183,7 @@
 
                                 <TextBlock Grid.Row="0" Text="Таблица значений:" FontWeight="Bold" FontSize="13" Margin="20 0"/>
 
-                                <DataGrid Grid.Row="1" Margin="10">
+                                <DataGrid Grid.Row="1" Margin="10" IsReadOnly="True">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="Длина теплообменника"/>
                                         <DataGridTextColumn Header="Ширина теплоообменника"/>

@@ -1,5 +1,4 @@
-﻿using Optimization.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,20 +10,23 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Optimization
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Логика взаимодействия для Registration.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Registration : Window
     {
-        public MainWindow()
+        public Registration()
         {
             InitializeComponent();
-            //DataContext = new MainWindowVM();
+        }
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            //это позволяет передать пароль во viewModel
+            ((dynamic)this.DataContext).Password = ((PasswordBox)sender).Password;
         }
     }
 }

@@ -13,6 +13,13 @@
 
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="4.7.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="WPF_MVVM_Classes">
+      <HintPath>..\..\FuzzyProject\FuzzyProject\Services\WPF_MVVM_Classes.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
