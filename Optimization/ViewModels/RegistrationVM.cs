@@ -77,7 +77,7 @@ namespace Optimization.ViewModels
                         return;
                     }
 
-                    Account newAccount = new Account { Login = Login, Password = Password, Role = "Оператор" };
+                    Account newAccount = new Account { Login = Login, Password = Password, Role = "Пользователь" };
                     context.Accounts.Add(newAccount);
                     context.SaveChanges();
 

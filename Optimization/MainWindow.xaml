@@ -7,17 +7,17 @@
         xmlns:local="clr-namespace:Optimization"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"    
-        Title="Программный комплекс для решения задач оптимизации" Height="650" Width="990">
+        Title="Программный комплекс для решения задач оптимизации" Height="750" Width="990">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.12*"/>
+            <RowDefinition Height="0.09*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" HorizontalAlignment="Left">
+        <Grid Grid.Row="0">
 
             <ToolBarTray>
-                <ToolBar Width="990">
+                <ToolBar >
                     <Button Command="{Binding About}" Content="{materialDesign:PackIcon Kind=InformationOutline}"/>
                     <Separator/>
                     <Button Content="{materialDesign:PackIcon Kind=ContentSaveCog}" />
@@ -26,6 +26,7 @@
                     <Button Content="Выход" Command="{Binding Exit}"/>
                 </ToolBar>
             </ToolBarTray>
+
         </Grid>
 
         <Grid Grid.Row="1">
@@ -36,26 +37,71 @@
 
             <Grid Grid.Row="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
                     <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="1.8*"/>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="1.8*"/>
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0" >
                     <GroupBox Header="Выбор метода" materialDesign:ElevationAssist.Elevation="Dp6" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="Метод:" Margin="20 0"/>
-                            <ComboBox SelectedItem="{Binding CurrentMethod}" ItemsSource="{Binding Methods}" Width="250"/>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="Вариант:" Margin="20 0"/>
+                                <ComboBox SelectedItem="{Binding CurrentVariant}" ItemsSource="{Binding Variants}" Width="240"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="0 10 0 0" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="Метод:" Margin="20 0"/>
+                                <ComboBox SelectedItem="{Binding CurrentMethod}" ItemsSource="{Binding Methods}" Width="250"/>
+                            </StackPanel>
+                        </Grid>
                     </GroupBox>
                 </Grid>
 
                 <Grid Grid.Row="1">
-                    <GroupBox Header="Ограничениe первого рода" materialDesign:ElevationAssist.Elevation="Dp6" BorderThickness="0">
+                    <Grid Grid.Row="1">
+                        <GroupBox Header="Параметры математической модели" materialDesign:ElevationAssist.Elevation="Dp6" BorderThickness="0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Число витков змеевика, шт:" Margin="20 0"/>
+                                        <TextBox Text="{Binding Parameters.N}" HorizontalAlignment="Left" Width="150"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="1" Margin="0 10 0 0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Нормирующие множители: " Margin="20 0 0 0"/>
+                                        <TextBlock Text="α:" Margin="10 0"/>
+                                        <TextBox Text="{Binding Parameters.Alpha}" HorizontalAlignment="Left" Width="30"/>
+                                        <TextBlock Text="β:" Margin="10 0"/>
+                                        <TextBox Text="{Binding Parameters.Beta}" HorizontalAlignment="Left" Width="30"/>
+                                        <TextBlock Text="γ:" Margin="10 0"/>
+                                        <TextBox Text="{Binding Parameters.Gamma}" HorizontalAlignment="Left" Width="30"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <GroupBox Header="Ограничения" materialDesign:ElevationAssist.Elevation="Dp6" BorderThickness="0">
                         <Grid >
                             <Grid.RowDefinitions>
+                                <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
@@ -69,14 +115,14 @@
                                 <Grid Grid.Column="0" VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Min L:" Margin="30 0 10 0"/>
-                                        <TextBox Width="100"/>
+                                        <TextBox Text="{Binding Parameters.LMin}" Width="100"/>
                                     </StackPanel>
                                 </Grid>
 
                                 <Grid Grid.Column="1" VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Max L:" Margin="20 0 10 0"/>
-                                        <TextBox Width="100"/>
+                                        <TextBox Text="{Binding Parameters.LMax}" Width="100"/>
                                     </StackPanel>
                                 </Grid>
                             </Grid>
@@ -90,39 +136,53 @@
                                 <Grid Grid.Column="0" VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Min S:" Margin="30 0 10 0"/>
-                                        <TextBox Width="100"/>
+                                        <TextBox Text="{Binding Parameters.SMin}" Width="100"/>
                                     </StackPanel>
                                 </Grid>
 
                                 <Grid Grid.Column="1" VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Max S:" Margin="20 0 10 0"/>
-                                        <TextBox Width="100"/>
+                                        <TextBox Text="{Binding Parameters.SMax}" Width="100"/>
                                     </StackPanel>
                                 </Grid>
                             </Grid>
 
+                            <Grid Grid.Row="2" Margin="0 10 0 0">
+                                <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="L+S >= (м)" Margin="30 0 10 0"/>
+                                    <TextBox Text="{Binding Parameters.LSSum}" HorizontalAlignment="Left" Width="150"/>
+                                </StackPanel>
+                            </Grid>
                         </Grid>
                     </GroupBox>
                 </Grid>
 
-                <Grid Grid.Row="2">
-                    <Grid Grid.Row="1">
-                        <GroupBox Header="Ограничение второго рода" materialDesign:ElevationAssist.Elevation="Dp6" BorderThickness="0">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock Text="L+S >= (м)" Margin="30 0 10 0"/>
-                                <TextBox HorizontalAlignment="Left" Width="150"/>
-                            </StackPanel>
-                        </GroupBox>
-                    </Grid>
-                </Grid>
+
 
                 <Grid Grid.Row="3">
-                    <GroupBox Header="Точность вычисления" materialDesign:ElevationAssist.Elevation="Dp6" BorderThickness="0">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="Погрешность:" Margin="20 0 10 0"/>
-                            <TextBox Width="150"/>
-                        </StackPanel>
+                    <GroupBox Header="Параметры метода решения уравнения" materialDesign:ElevationAssist.Elevation="Dp6" BorderThickness="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="Погрешность:" Margin="20 0 10 0"/>
+                                    <TextBox Text="{Binding Parameters.Epsilon}" Width="150"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="Себестоимость изделия, у.е.:" Margin="20 0 10 0"/>
+                                    <TextBox Text="{Binding Parameters.Price}" Width="150"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+
                     </GroupBox>
                 </Grid>
 
@@ -138,17 +198,17 @@
 
                             <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
                                 <TextBlock Text="Длина теплоообменного устройства, м:" Margin="20 0 10 0"/>
-                                <TextBox Width="120"/>
+                                <TextBox Text="{Binding OutputParam.LengthResult}" Width="120"/>
                             </StackPanel>
 
                             <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="center">
                                 <TextBlock Text="Ширина теплоообменного устройства, м:" Margin="20 0 10 0"/>
-                                <TextBox Width="120"/>
+                                <TextBox Text="{Binding OutputParam.WidthResult}" Width="120"/>
                             </StackPanel>
 
                             <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="center">
                                 <TextBlock Text="Минимальные затраты на изделие, y.e.:" Margin="20 0 10 0"/>
-                                <TextBox Width="120"/>
+                                <TextBox Text="{Binding OutputParam.CostPriceResult}" Width="120"/>
                             </StackPanel>
                         </Grid>
                     </GroupBox>
@@ -159,48 +219,48 @@
 
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition Height="5*"/>
-                        <RowDefinition/>
+                        <RowDefinition Height="0.6*"/>
+                        <RowDefinition Height="5.2*"/>
+                        <RowDefinition Height="0.5*"/>
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0">
                         <Border BorderThickness="2" BorderBrush="#9B8BBB">
                             <StackPanel HorizontalAlignment="Center">
-                                <TextBlock Text="Математическая модель: " FontWeight="Bold" FontSize="13" Margin="20 0"/>
                                 <Image Source="/formula.png"/>
                             </StackPanel>
                         </Border>
                     </Grid>
 
                     <Grid Grid.Row="1" Margin="0 10 0 0">
-                        <Border BorderThickness="2" BorderBrush="#9B8BBB">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="0.09*"/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
+                        <TabControl >
+                            <TabItem Header="Таблица значений">
+                                <Border BorderThickness="2" BorderBrush="#9B8BBB">
+                                    <DataGrid ItemsSource="{Binding OutputParam.OutputParamsArr}" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible" AutoGenerateColumns="False" Margin="10" IsReadOnly="True"  Style="{DynamicResource MaterialDesignDataGrid}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Binding="{Binding Length}" Width="*" Header="Длина"/>
+                                            <DataGridTextColumn Binding="{Binding Width}" Width="*" Header="Ширина"/>
+                                            <DataGridTextColumn Binding="{Binding CostPrice}" Width="*" Header="Стоимость"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Border>
+                            </TabItem>
 
-                                <TextBlock Grid.Row="0" Text="Таблица значений:" FontWeight="Bold" FontSize="13" Margin="20 0"/>
+                            <TabItem Header="График 2D">
 
-                                <DataGrid Grid.Row="1" Margin="10" IsReadOnly="True">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Длина теплообменника"/>
-                                        <DataGridTextColumn Header="Ширина теплоообменника"/>
-                                        <DataGridTextColumn Header="Себестоимость изделия"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </Grid>
-                        </Border>
+                            </TabItem>
+
+                            <TabItem Header="График 3D">
+
+                            </TabItem>
+                        </TabControl>
+
+
                     </Grid>
 
                     <Grid Grid.Row="2">
                         <StackPanel Orientation="Horizontal">
-                            <Button Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="График 2D" Margin="15 0" Width="140"/>
-                            <Separator/>
-                            <Button Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="График 3D" Width="140"/>
-                            <Separator/>
-                            <Button Content="Рассчитать" Width="210" Style="{StaticResource MaterialDesignRaisedButton}" Margin="50 0"/>
+                            <Button Command="{Binding Calculate}" Content="Рассчитать" Width="600" Style="{StaticResource MaterialDesignRaisedButton}"/>
                         </StackPanel>
 
                     </Grid>

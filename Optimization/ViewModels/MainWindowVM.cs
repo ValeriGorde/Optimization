@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Optimization.Filter;
+using Optimization.Models;
+using Optimization.Plots;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using WPF_MVVM_Classes;
 
@@ -13,6 +11,9 @@ namespace Optimization.ViewModels
     internal class MainWindowVM: ViewModelBase
     {
         private readonly Window mainWindow;
+        private List<Point3D> _point3D = new();
+        OutputParams parameters;
+
         public MainWindowVM(Window _mainWindow)
         {
             mainWindow = _mainWindow;
@@ -20,12 +21,103 @@ namespace Optimization.ViewModels
             Methods = new List<string>();
             Methods.Add("Метод Бокса");
             Methods.Add("Метод сканирования");
+
+            Variants = new List<string>();
+            Variants.Add("Вариант 3"); //брать из бд (задание метода)
         }
 
-        private string? _currentMethod;
+        #region Params
+
+        private InputParameters _parameter = new InputParameters { Alpha = 1, Beta = 1, Gamma = 1, H = 9, N = 10, LMin = 1, LMax = 15, SMin = 1, SMax = 12, Price = 100, LSSum = 10, Epsilon = 0.01  };
+        public InputParameters Parameters
+        {
+            get { return _parameter; }
+            set
+            {
+                _parameter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private OutputParams? _outputParam;
+        public OutputParams OutputParam
+        {
+            get { return _outputParam; }
+            set
+            {
+                _outputParam = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        private List<Point3D> _dataList;
+        public List<Point3D> DataList
+        {
+            get { return _dataList; }
+            set
+            {
+                _dataList = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private RelayCommand _calculate;
+        public RelayCommand Calculate
+        {
+            get
+            {
+                return _calculate ??= new RelayCommand(c =>
+                {
+                    parameters = new OutputParams();
+
+                    var calculate = new ScanMethod(Parameters);
+                    calculate.Calculation(out var points3D);
+
+                    var temp = new List<double>();
+
+                    foreach (var item in points3D)
+                    {
+                        temp.Add(item.Z);
+                    }
+                    
+                    parameters.LengthResult = points3D.Find(x => x.Z == temp.Max()).X;
+                    parameters.WidthResult = points3D.Find(x => x.Z == temp.Max()).Y;
+                    parameters.CostPriceResult = temp.Max();
+                    parameters.OutputParamsArr = FiltrationOutput.CalcEqvation(Parameters);
+
+
+                    OutputParam = parameters;   
+                });
+            }
+        }
+
+        private string _currentVariant;
+        public string CurrentVariant
+        {
+            get => _currentVariant;
+            set
+            {
+                _currentVariant = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private List<string> _variants;
+        public List<string> Variants
+        {
+            get => _variants;
+            set
+            {
+                _variants = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _currentMethod;
         public string CurrentMethod
         {
-            get { return _currentMethod; }
+            get => _currentMethod;
             set
             {
                 _currentMethod = value;
@@ -33,10 +125,10 @@ namespace Optimization.ViewModels
             }
         }
 
-        private List<string>? _methods;
+        private List<string> _methods;
         public List<string> Methods
         {
-            get { return _methods; }
+            get => _methods; 
             set
             {
                 _methods = value;
@@ -59,7 +151,8 @@ namespace Optimization.ViewModels
                         "\r\nгде    Н – высота теплообменника (9 м)," +
                         "\r\n         N –  число витков змеевика (10 шт)," +
                         "\r\n           α, β γ, – нормирующие множители, равные 1." +
-                        "\r\nНа габариты теплообменника накладываются следующие ограничения. Длина L должна быть не менее 1 м и не более 15 м, ширина S – не менее 1м и не более 12 м. Кроме того, обязательно должно выполняться условие: сумма (L+S) должна быть не менее 12 м.  " +
+                        "\r\nНа габариты теплообменника накладываются следующие ограничения. Длина L должна быть не менее 1 м и не более 15 м, ширина S – не менее 1м и не более 12 м. " +
+                        "Кроме того, обязательно должно выполняться условие: сумма (L+S) должна быть не менее 12 м.  " +
                         "Стоимость изготовления 1 кГ изделия составляет 100 у.е. Точность решения – 0,01 м.\r\n", "Описание задания");
                    
                 });

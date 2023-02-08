@@ -95,7 +95,7 @@ namespace Optimization.ViewModels
                     var account = context.Accounts.ToList().FirstOrDefault(x => x.Login == Login && x.Password == Password);
                     if (account != null)
                     {
-                        if (account.Role == "Оператор")
+                        if (account.Role == "Пользователь")
                         {
                             mainWindow = new MainWindow();
                             mainWindowVM = new MainWindowVM(mainWindow);
@@ -105,7 +105,7 @@ namespace Optimization.ViewModels
                         else if (account.Role == "Администратор")
                         {
                             adminWindow = new AdminWindow();
-                            adminVM = new AdminWindowVM();
+                            adminVM = new AdminWindowVM(adminWindow);
                             adminWindow.DataContext = adminVM;
                             adminWindow.Show();
                         }

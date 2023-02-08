@@ -4,80 +4,276 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Optimization"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Кабинет администратора" Height="600" Width="800"
+        Title="Кабинет администратора" Height="450" Width="900"
         WindowStartupLocation="CenterScreen">
     <Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition MaxHeight="60"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.12*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <Menu Grid.Column="0" Style="{DynamicResource MaterialDesignMenu}" >
+                <MenuItem Command="{Binding TaskDescription}" Header="Справка" FontSize="12"/>
+            </Menu>
 
-            <Grid Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+            <Menu Grid.Column="1" Style="{DynamicResource MaterialDesignMenu}" HorizontalAlignment="Right">
+                <MenuItem Command="{Binding Exit}"  Header="Выход" FontSize="12"/>
+            </Menu>
+        </Grid>
+        
+        <Grid Row="1">
+            <TabControl TabStripPlacement="Left" Style="{DynamicResource MaterialDesignNavigatilRailTabControl}">
+                <TabItem Header="Пользователи" Width="160" Height="60">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.8*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" VerticalAlignment="Top" Style="{DynamicResource MaterialDesignHeadline5TextBlock}" FontWeight="Bold" Text="Кабинет администратора"/>
-                <Button Command="{Binding Exit}" Grid.Column="1" Style="{DynamicResource MaterialDesignFlatLightButton}" Content="Выход"  Width="80" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-            </Grid>
+                        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" SelectedItem="{Binding SelectedAccount}" ItemsSource= "{Binding Account}" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Id}" Header="ID" Width="SizeToHeader" />
+                                <DataGridTextColumn Binding="{Binding Login}" Header="Логин" Width="140"/>
+                                <DataGridTextColumn Binding="{Binding Password}" Header="Пароль" Width="140"/>
+                                <DataGridTextColumn Binding="{Binding Role}" Header="Роль" Width="140"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
 
-            <Grid Row="1">
-                <TabControl >
-                    <TabItem Header="Пользователи">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1.8*"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
 
-                            <DataGrid AutoGenerateColumns="False" IsReadOnly="True" SelectedItem="{Binding SelectedAccount}" ItemsSource= "{Binding Account}" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Binding="{Binding Id}" Header="ID" Width="SizeToHeader" />
-                                    <DataGridTextColumn Binding="{Binding Login}" Header="Логин" Width="110"/>
-                                    <DataGridTextColumn Binding="{Binding Password}" Header="Пароль" Width="110"/>
-                                    <DataGridTextColumn Binding="{Binding Role}" Header="Роль" Width="110"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-
-                            <Grid Grid.Column="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-
-                                <StackPanel Grid.Row="0" Orientation="Horizontal">
-                                    <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Логин:" />
-                                    <TextBox Text="{Binding NewLogin}" Margin="10 10 10 0" Width="140" VerticalAlignment="Center"/>
-                                </StackPanel>
-                                <StackPanel Grid.Row="1" Orientation="Horizontal">
-                                    <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Пароль:" />
-                                    <TextBox Text="{Binding NewPassword}" Margin="10 10 10 0" Width="130" VerticalAlignment="Center"/>
-                                </StackPanel>
-                                <StackPanel Grid.Row="2" Orientation="Horizontal">
-                                    <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Роль:" />
-                                    <ComboBox SelectedItem="{Binding NewRole}" ItemsSource="{Binding Roles}" Margin="10 10 10 0" Width="150" VerticalAlignment="Center"/>
-                                </StackPanel>
-                                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Button Command="{Binding AddAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Добавить"  Height="32" Width="150" Cursor="Hand"/>
-                                </StackPanel>
-                                <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Button Command="{Binding UpdateAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Изменить" Height="32" Width="150" Cursor="Hand"/>
-                                </StackPanel>
-                                <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Button Command="{Binding RemoveAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Удалить" Height="32" Width="150" Cursor="Hand"/>
-                                </StackPanel>
-                            </Grid>
+                            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Логин:" />
+                                <TextBox Text="{Binding NewLogin}" Margin="10 10 10 0" Width="140" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Пароль:" />
+                                <TextBox Text="{Binding NewPassword}" Margin="10 10 10 0" Width="130" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Роль:" />
+                                <ComboBox SelectedItem="{Binding NewRole}" ItemsSource="{Binding Roles}" Margin="10 10 10 0" Width="150" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Command="{Binding AddAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Добавить"  Height="32" Width="150" Cursor="Hand"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Command="{Binding UpdateAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Изменить" Height="32" Width="150" Cursor="Hand"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Command="{Binding RemoveAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Удалить" Height="32" Width="150" Cursor="Hand"/>
+                            </StackPanel>
                         </Grid>
-                    </TabItem>
-                </TabControl>
-            </Grid>
+                    </Grid>
+                </TabItem>
+
+                <TabItem  Header="Задачи оптимизации" Width="170" Height="60">
+                    <TabControl>
+                        <TabItem Header="Задачи">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.5*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Наименование" Width="0.5*" />
+                                        <DataGridTextColumn  Header="Наличие реализации" Width="0.5*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                        <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Наименование:" />
+                                        <TextBox Margin="10 10 10 0" Width="125" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                        <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Есть реализация:" />
+                                        <CheckBox Margin="15 0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button Command="{Binding AddAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Добавить"  Height="32" Width="150" Cursor="Hand"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button Command="{Binding UpdateAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Изменить" Height="32" Width="150" Cursor="Hand"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button Command="{Binding RemoveAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Удалить" Height="32" Width="150" Cursor="Hand"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </TabItem>
+
+                        <TabItem Header="Параметры задачи">
+                            
+                        </TabItem>
+                    </TabControl>
+                    
+                </TabItem>
+                
+                <TabItem  Header="Методы оптимизации" Width="170" Height="60">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Наименование" Width="0.5*" />
+                                <DataGridTextColumn  Header="Наличие реализации" Width="0.5*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Наименование:" />
+                                <TextBox Margin="10 10 10 0" Width="125" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Есть реализация:" />
+                                <CheckBox Margin="15 0"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Command="{Binding AddAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Добавить"  Height="32" Width="150" Cursor="Hand"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Command="{Binding UpdateAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Изменить" Height="32" Width="150" Cursor="Hand"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Command="{Binding RemoveAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Удалить" Height="32" Width="150" Cursor="Hand"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+
+                <TabItem  Header="Параметры" Width="160" Height="60">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.9*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Width="SizeToHeader" />
+                                <DataGridTextColumn  Header="Наименование" Width="SizeToHeader"/>
+                                <DataGridTextColumn Header="Обозначение" Width="SizeToHeader" />
+                                <DataGridTextColumn  Header="Единица измерения" Width="SizeToHeader"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Наименование:" />
+                                <TextBox Margin="10 10 10 0" Width="110" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Обозначение:" />
+                                <TextBox Margin="10 10 10 0" Width="115" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Ед. измерения:" />
+                                <ComboBox Margin="15 0" Width="110"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Command="{Binding AddAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Добавить"  Height="32" Width="150" Cursor="Hand"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Command="{Binding UpdateAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Изменить" Height="32" Width="150" Cursor="Hand"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Command="{Binding RemoveAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Удалить" Height="32" Width="150" Cursor="Hand"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+
+                <TabItem  Header="Единицы измерения" Width="160" Height="60">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Width="0.5*" />
+                                <DataGridTextColumn  Header="Наменование" Width="0.5*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Наименование:" />
+                                <TextBox Margin="10 10 10 0" Width="125" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Command="{Binding AddAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Добавить"  Height="32" Width="150" Cursor="Hand"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Command="{Binding UpdateAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Изменить" Height="32" Width="150" Cursor="Hand"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Command="{Binding RemoveAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Удалить" Height="32" Width="150" Cursor="Hand"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
         </Grid>
     </Grid>
 </Window>
