@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Optimization"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Кабинет администратора" Height="450" Width="900"
+        Title="Кабинет администратора" Height="500" Width="900"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
@@ -31,7 +31,7 @@
         
         <Grid Row="1">
             <TabControl TabStripPlacement="Left" Style="{DynamicResource MaterialDesignNavigatilRailTabControl}">
-                <TabItem Header="Пользователи" Width="160" Height="60">
+                <TabItem Header="Пользователи" Width="170" Height="60">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1.8*"/>
@@ -143,10 +143,10 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
+                        <DataGrid SelectedItem="{Binding SelectedMethod}" ItemsSource= "{Binding Methods}" AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Наименование" Width="0.5*" />
-                                <DataGridTextColumn  Header="Наличие реализации" Width="0.5*"/>
+                                <DataGridTextColumn Binding="{Binding Name}" Header="Наименование" Width="0.5*" />
+                                <DataGridTextColumn Binding="{Binding Realization}"  Header="Наличие реализации" Width="0.5*"/>
                             </DataGrid.Columns>
                         </DataGrid>
 
@@ -162,20 +162,20 @@
 
                             <StackPanel Grid.Row="0" Orientation="Horizontal">
                                 <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Наименование:" />
-                                <TextBox Margin="10 10 10 0" Width="125" VerticalAlignment="Center"/>
+                                <TextBox Text="{Binding NewMethodName}" Margin="10 10 10 0" Width="125" VerticalAlignment="Center"/>
                             </StackPanel>
                             <StackPanel Grid.Row="1" Orientation="Horizontal">
                                 <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Есть реализация:" />
-                                <CheckBox Margin="15 0"/>
+                                <CheckBox IsChecked="{Binding HaveRealization}"/>
                             </StackPanel>
                             <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Command="{Binding AddAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Добавить"  Height="32" Width="150" Cursor="Hand"/>
+                                <Button Command="{Binding AddMethod}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Добавить"  Height="32" Width="150" Cursor="Hand"/>
                             </StackPanel>
                             <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Command="{Binding UpdateAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Изменить" Height="32" Width="150" Cursor="Hand"/>
+                                <Button Command="{Binding UpdateMethod}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Изменить" Height="32" Width="150" Cursor="Hand"/>
                             </StackPanel>
                             <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Command="{Binding RemoveAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Удалить" Height="32" Width="150" Cursor="Hand"/>
+                                <Button Command="{Binding RemoveMethod}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Удалить" Height="32" Width="150" Cursor="Hand"/>
                             </StackPanel>
                         </Grid>
                     </Grid>
@@ -188,12 +188,13 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
+                        <DataGrid SelectedItem="{Binding SelectedParameter}" ItemsSource= "{Binding Parameters}" AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Width="SizeToHeader" />
-                                <DataGridTextColumn  Header="Наименование" Width="SizeToHeader"/>
-                                <DataGridTextColumn Header="Обозначение" Width="SizeToHeader" />
-                                <DataGridTextColumn  Header="Единица измерения" Width="SizeToHeader"/>
+                                <DataGridTextColumn Header="Наименование" Width="*"/>
+                                <DataGridTextColumn Header="Обозначение" Width="*" />
+                                <DataGridTextColumn Header="Вариант задания" Width="*" />
+                                <!--<DataGridTextColumn  Header="Единица измерения" Width="SizeToHeader"/>-->
                             </DataGrid.Columns>
                         </DataGrid>
 
@@ -209,7 +210,7 @@
 
                             <StackPanel Grid.Row="0" Orientation="Horizontal">
                                 <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Наименование:" />
-                                <TextBox Margin="10 10 10 0" Width="110" VerticalAlignment="Center"/>
+                                <TextBox Text="{Binding NewName}" Margin="10 10 10 0" Width="110" VerticalAlignment="Center"/>
                             </StackPanel>
                             <StackPanel Grid.Row="1" Orientation="Horizontal">
                                 <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Обозначение:" />

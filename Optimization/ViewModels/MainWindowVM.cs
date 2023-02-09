@@ -1,4 +1,6 @@
-﻿using Optimization.Filter;
+﻿using Optimization.Calculation;
+using Optimization.DB_EF;
+using Optimization.Filter;
 using Optimization.Models;
 using Optimization.Plots;
 using System.Collections.Generic;
@@ -13,10 +15,12 @@ namespace Optimization.ViewModels
         private readonly Window mainWindow;
         private List<Point3D> _point3D = new();
         OutputParams parameters;
+        ApplicationContext context;
 
         public MainWindowVM(Window _mainWindow)
         {
             mainWindow = _mainWindow;
+            context = new ApplicationContext(); //привязка к бд
 
             Methods = new List<string>();
             Methods.Add("Метод Бокса");
@@ -28,13 +32,13 @@ namespace Optimization.ViewModels
 
         #region Params
 
-        private InputParameters _parameter = new InputParameters { Alpha = 1, Beta = 1, Gamma = 1, H = 9, N = 10, LMin = 1, LMax = 15, SMin = 1, SMax = 12, Price = 100, LSSum = 10, Epsilon = 0.01  };
+        private InputParameters _parameters = new InputParameters { Alpha = 1, Beta = 1, Gamma = 1, H = 9, N = 10, LMin = 1, LMax = 15, SMin = 1, SMax = 12, Price = 100, LSSum = 10, Epsilon = 0.01  };
         public InputParameters Parameters
         {
-            get { return _parameter; }
+            get { return _parameters; }
             set
             {
-                _parameter = value;
+                _parameters = value;
                 OnPropertyChanged();
             }
         }
@@ -69,25 +73,52 @@ namespace Optimization.ViewModels
             {
                 return _calculate ??= new RelayCommand(c =>
                 {
-                    parameters = new OutputParams();
-
-                    var calculate = new ScanMethod(Parameters);
-                    calculate.Calculation(out var points3D);
-
-                    var temp = new List<double>();
-
-                    foreach (var item in points3D)
+                    if (Parameters != null)
                     {
-                        temp.Add(item.Z);
+                        if (CurrentMethod != null || CurrentVariant != null)
+                        {
+                            
+                            if (CurrentMethod == "Метод сканирования")
+                            {
+                                parameters = new OutputParams();
+
+                                var calculate = new ScanMethod(Parameters);
+                                calculate.Calculation(out var points3D);
+
+                                var temp = new List<double>();
+
+                                foreach (var point in points3D)
+                                {
+                                    temp.Add(point.Z);
+                                }
+
+                                parameters.LengthResult = points3D.Find(x => x.Z == temp.Max()).X;
+                                parameters.WidthResult = points3D.Find(x => x.Z == temp.Max()).Y;
+                                parameters.CostPriceResult = temp.Max();
+                                parameters.OutputParamsArr = FiltrationOutput.CalcEqvation(Parameters);
+
+                                OutputParam = parameters;
+                            }
+                            else if (CurrentMethod == "Метод Бокса") 
+                            {
+                                MessageBox.Show("Метод Бокса в доработке!", "Обратитесь позже");
+                            }
+                            else 
+                            {
+                                MessageBox.Show("Данный метод оптимизации не реализован!", "В разработке");
+                            }
+                        }
+                        else 
+                        {
+                            MessageBox.Show("Выберите вариант задания и метод оптимизации!", "Ошибка");
+                        }
+                        
+                    }
+                    else 
+                    {
+                        MessageBox.Show("Заполните все поля!", "Ошибка");
                     }
                     
-                    parameters.LengthResult = points3D.Find(x => x.Z == temp.Max()).X;
-                    parameters.WidthResult = points3D.Find(x => x.Z == temp.Max()).Y;
-                    parameters.CostPriceResult = temp.Max();
-                    parameters.OutputParamsArr = FiltrationOutput.CalcEqvation(Parameters);
-
-
-                    OutputParam = parameters;   
                 });
             }
         }

@@ -11,6 +11,8 @@ namespace Optimization.DB_EF
     internal class ApplicationContext: DbContext
     {
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<OptimizationMethod> OptimizationMethods { get; set; }
+        public DbSet<Parameter> Parameters { get; set; }
         public ApplicationContext() 
         {
             Database.EnsureCreated();

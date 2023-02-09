@@ -16,11 +16,13 @@ namespace Optimization.ViewModels
     {
         ApplicationContext context;
         AccountCRUD crud;
+        MethodCRUD crudMethod;
         private readonly Window adminWindow;
         public AdminWindowVM(Window _adminWindow)
         {
             context = new ApplicationContext();
             crud = new AccountCRUD();
+            crudMethod = new MethodCRUD();
             RolesCreate();
             SetAccountData();
             adminWindow = _adminWindow;
@@ -36,7 +38,9 @@ namespace Optimization.ViewModels
         {
             context = new ApplicationContext();
             context.Accounts.Load();
+            context.OptimizationMethods.Load();
             Account = context.Accounts.ToList();
+            Methods = context.OptimizationMethods.ToList();
         }
 
         #region Account
@@ -193,6 +197,143 @@ namespace Optimization.ViewModels
                         MessageBox.Show("Заполните все поля, чтобы добавить новго пользователя!", "Ошибка удаления пользователя");
                     }
                 });
+            }
+        }
+        #endregion
+
+        #region Method
+        private List<OptimizationMethod> _methods;
+        public List<OptimizationMethod> Methods
+        {
+            get => _methods;
+            set
+            {
+                _methods = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _newMethodName;
+        public string NewMethodName 
+        {
+            get { return _newMethodName; }
+            set 
+            {
+                _newMethodName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _haveRealization;
+        public bool HaveRealization
+        {
+            get { return _haveRealization; }
+            set
+            {
+                _haveRealization = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private OptimizationMethod _selectedMethod;
+        public OptimizationMethod SelectedMethod
+        {
+            get => _selectedMethod;
+            set
+            {
+                _selectedMethod = value;
+                OnPropertyChanged();
+
+                if (SelectedMethod != null)
+                {
+                    NewMethodName = _selectedMethod.Name;
+                    HaveRealization = _selectedMethod.Realization;
+                }
+            }
+        }
+
+        private RelayCommand _addMethod;
+        public RelayCommand AddMethod
+        {
+            get
+            {
+                return _addMethod ??= new RelayCommand(x =>
+                {
+                    if (NewMethodName != null)
+                    {
+                        var method = new OptimizationMethod { Name = NewMethodName, Realization = HaveRealization };
+                        crudMethod.Create(method);
+                        SetAccountData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Введите наименование метода!", "Ошибка добавления метода");
+                    }
+                });
+            }
+        }
+
+        private RelayCommand _removeMethod;
+        public RelayCommand RemoveMethod
+        {
+            get
+            {
+                return _removeMethod ??= new RelayCommand(x =>
+                {
+                    if (NewMethodName != null)
+                    {
+                        crudMethod.Delete(SelectedMethod.Id);
+                        SetAccountData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Выберите метод для удаления!", "Ошибка удаления метода");
+                    }
+                });
+            }
+        }
+
+        private RelayCommand _updateMethod;
+        public RelayCommand UpdateMethod
+        {
+            get
+            {
+                return _updateMethod ??= new RelayCommand(x =>
+                {
+                    if (NewMethodName != null)
+                    {
+                        var method = new OptimizationMethod { Id = SelectedMethod.Id, Name = NewMethodName, Realization = HaveRealization };
+
+                        crudMethod.Update(method);
+                        SetAccountData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Не все поля заполнены!", "Ошибка удаления метода");
+                    }
+                });
+            }
+        }
+
+        #endregion
+
+        #region Parameter
+
+        private OptimizationMethod _selectedParameter;
+        public OptimizationMethod SelectedParameter
+        {
+            get => _selectedParameter;
+            set
+            {
+                _selectedParameter = value;
+                OnPropertyChanged();
+
+                if (SelectedParameter != null)
+                {
+                    NewParamName = _selectedMethod.Name;
+                    NewParamSymbol = _selectedMethod.Realization;
+                    NewParamVariant = _selectedParameter.
+                }
             }
         }
         #endregion

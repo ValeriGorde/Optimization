@@ -6,11 +6,12 @@ using System.Linq;
 using System.Windows;
 using Point = Optimization.Plots.Point;
 
-namespace Optimization
+namespace Optimization.Calculation
 {
     internal class ScanMethod
     {
         InputParameters inputParameters;
+        
         public int CalculationCount { get; private set; }
         private double step;
         public double k = 10;
@@ -22,18 +23,9 @@ namespace Optimization
             inputParameters = _inputParameters;
         }
 
-        public double MathModel(double length, double width)
-        {
-            return inputParameters.Alpha * (Math.Pow(length - width, 2) + inputParameters.Beta * 1 / inputParameters.H * Math.Pow(width + length - inputParameters.Gamma * inputParameters.N, 2));
-        }
-
-        public bool Conditions(double length, double width) 
-        {
-            return length >= inputParameters.LMin && length <= inputParameters.LMax && width >= inputParameters.SMin && width <= inputParameters.SMax && length + width >= inputParameters.LSSum;
-        }
-
         public void Calculation(out List<Point3D> points3D) 
         {
+
             List<double> values;
             Point newMax;
 
@@ -68,25 +60,25 @@ namespace Optimization
         private Point SearchMaxOnGrid(out List<Point3D> points3D, out List<double> values) 
         {
             points3D = new List<Point3D>();
+            MathModel model = new MathModel(inputParameters);
 
             for (var l = inputParameters.LMin; l <= inputParameters.LMax; l += step) 
             {
                 for (var w = inputParameters.SMin; w <= inputParameters.SMax; w += step) 
                 {
-                    if (!Conditions(l, w)) 
+                    if (!model.Conditions(l, w)) 
                     {
                         continue;
                     }
 
                     CalculationCount++;
-                    var value = MathModel(l, w);
+                    var value = model.MainModel(l, w);
 
                     if (value < 0) 
                     {
                         MessageBox.Show($"Длина теплоообменника, м {l} Ширина теплообменника, м {w} Себестоимость изделия, у.е. {value}");
                     }
-
-                    points3D.Add(new Point3D(Math.Round(l,2), Math.Round(w,2), Math.Round(value, 2)));
+                    points3D.Add(new Point3D(Math.Round(l, 2), Math.Round(w, 2), Math.Round(value, 2)));
                 }
             }
 
