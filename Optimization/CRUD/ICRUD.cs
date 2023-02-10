@@ -19,7 +19,7 @@ namespace Optimization.CRUD
         /// Просмотр элемента по id
         /// </summary>
         /// <param name="item"></param>
-        public void Read(int id);
+        public bool Read(int id);
 
         /// <summary>
         /// Обновление данных

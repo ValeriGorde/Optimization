@@ -13,13 +13,13 @@
             <RowDefinition Height="0.12*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
+
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            
+
             <Menu Grid.Column="0" Style="{DynamicResource MaterialDesignMenu}" >
                 <MenuItem Command="{Binding TaskDescription}" Header="Справка" FontSize="12"/>
             </Menu>
@@ -28,7 +28,7 @@
                 <MenuItem Command="{Binding Exit}"  Header="Выход" FontSize="12"/>
             </Menu>
         </Grid>
-        
+
         <Grid Row="1">
             <TabControl TabStripPlacement="Left" Style="{DynamicResource MaterialDesignNavigatilRailTabControl}">
                 <TabItem Header="Пользователи" Width="170" Height="60">
@@ -93,8 +93,8 @@
 
                                 <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Наименование" Width="0.5*" />
-                                        <DataGridTextColumn  Header="Наличие реализации" Width="0.5*"/>
+                                        <DataGridTextColumn Header="Вариант" Width="0.5*" />
+                                        <DataGridTextColumn  Header="Описание" Width="0.5*"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
 
@@ -128,14 +128,61 @@
                                 </Grid>
                             </Grid>
                         </TabItem>
+                        <TabItem Header="Параметры задач">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.9*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
 
-                        <TabItem Header="Параметры задачи">
-                            
+                                <DataGrid SelectedItem="{Binding SelectedParameter}" ItemsSource= "{Binding Parameters}" AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Binding="{Binding Id}" Header="ID" Width="SizeToHeader"/>
+                                        <DataGridTextColumn Binding="{Binding Name}" Header="Наименование" Width="*"/>
+                                        <DataGridTextColumn Binding="{Binding Symbol}" Header="Обозначение" Width="SizeToHeader" />
+                                        <!--<DataGridTextColumn  Header="Единица измерения" Width="SizeToHeader"/>-->
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                        <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Вариант:" />
+                                        <ComboBox Text="{Binding Parameters.Variant}" Margin="10 10 10 0" Width="115" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                        <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Наименование:" />
+                                        <TextBox Text="{Binding NewParamName}" Margin="10 10 10 0" Width="110" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                        <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Обозначение:" />
+                                        <TextBox Text="{Binding NewParamSymbol}" Margin="10 10 10 0" Width="115" VerticalAlignment="Center"/>
+                                    </StackPanel>                                    
+                                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button Command="{Binding AddParameter}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Добавить"  Height="32" Width="150" Cursor="Hand"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button Command="{Binding UpdateParameter}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Изменить" Height="32" Width="150" Cursor="Hand"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button Command="{Binding RemoveParameter}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Удалить" Height="32" Width="150" Cursor="Hand"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
                         </TabItem>
                     </TabControl>
-                    
+
+
                 </TabItem>
-                
+
                 <TabItem  Header="Методы оптимизации" Width="170" Height="60">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -190,10 +237,10 @@
 
                         <DataGrid SelectedItem="{Binding SelectedParameter}" ItemsSource= "{Binding Parameters}" AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Width="SizeToHeader" />
-                                <DataGridTextColumn Header="Наименование" Width="*"/>
-                                <DataGridTextColumn Header="Обозначение" Width="*" />
-                                <DataGridTextColumn Header="Вариант задания" Width="*" />
+                                <DataGridTextColumn Binding="{Binding Id}" Header="ID" Width="SizeToHeader"/>
+                                <DataGridTextColumn Binding="{Binding Name}" Header="Наименование" Width="*"/>
+                                <DataGridTextColumn Binding="{Binding Symbol}" Header="Обозначение" Width="SizeToHeader" />
+                                <DataGridTextColumn Binding="{Binding Variant}" Header="Вариант задания" Width="*" />
                                 <!--<DataGridTextColumn  Header="Единица измерения" Width="SizeToHeader"/>-->
                             </DataGrid.Columns>
                         </DataGrid>
@@ -210,30 +257,30 @@
 
                             <StackPanel Grid.Row="0" Orientation="Horizontal">
                                 <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Наименование:" />
-                                <TextBox Text="{Binding NewName}" Margin="10 10 10 0" Width="110" VerticalAlignment="Center"/>
+                                <TextBox Text="{Binding NewParamName}" Margin="10 10 10 0" Width="110" VerticalAlignment="Center"/>
                             </StackPanel>
                             <StackPanel Grid.Row="1" Orientation="Horizontal">
                                 <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Обозначение:" />
-                                <TextBox Margin="10 10 10 0" Width="115" VerticalAlignment="Center"/>
+                                <TextBox Text="{Binding NewParamSymbol}" Margin="10 10 10 0" Width="115" VerticalAlignment="Center"/>
                             </StackPanel>
                             <StackPanel Grid.Row="2" Orientation="Horizontal">
-                                <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Ед. измерения:" />
-                                <ComboBox Margin="15 0" Width="110"/>
+                                <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" FontSize="14" Text="Вариант:" />
+                                <TextBox Text="{Binding NewParamVariant}" Margin="10 10 10 0" Width="115" VerticalAlignment="Center"/>
                             </StackPanel>
                             <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Command="{Binding AddAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Добавить"  Height="32" Width="150" Cursor="Hand"/>
+                                <Button Command="{Binding AddParameter}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Добавить"  Height="32" Width="150" Cursor="Hand"/>
                             </StackPanel>
                             <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Command="{Binding UpdateAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Изменить" Height="32" Width="150" Cursor="Hand"/>
+                                <Button Command="{Binding UpdateParameter}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Изменить" Height="32" Width="150" Cursor="Hand"/>
                             </StackPanel>
                             <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Command="{Binding RemoveAccount}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Удалить" Height="32" Width="150" Cursor="Hand"/>
+                                <Button Command="{Binding RemoveParameter}" Style="{DynamicResource MaterialDesignOutlinedDarkButton}" Content="Удалить" Height="32" Width="150" Cursor="Hand"/>
                             </StackPanel>
                         </Grid>
                     </Grid>
                 </TabItem>
 
-                <TabItem  Header="Единицы измерения" Width="160" Height="60">
+                <!--<TabItem  Header="Единицы измерения" Width="160" Height="60">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1.5*"/>
@@ -273,7 +320,7 @@
                             </StackPanel>
                         </Grid>
                     </Grid>
-                </TabItem>
+                </TabItem>-->
             </TabControl>
         </Grid>
     </Grid>

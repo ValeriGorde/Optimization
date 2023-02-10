@@ -25,9 +25,12 @@ namespace Optimization.CRUD
             context.SaveChanges();
         }
 
-        public void Read(int id)
+        public bool Read(int id)
         {
             var method = _Method.Find(m => m.Id == id);
+
+            if (method == null) return true;
+            else return false;
         }
 
         public void Update(OptimizationMethod item)

@@ -13,6 +13,6 @@ namespace Optimization.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Symbol { get; set; }
-        public int Variant { get; set; }
+        public string Variant { get; set; }
     }
 }

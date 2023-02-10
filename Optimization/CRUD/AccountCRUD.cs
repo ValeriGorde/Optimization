@@ -30,9 +30,10 @@ namespace Optimization.CRUD
             context.SaveChanges();
         }
 
-        public void Read(int id)
+        public bool Read(int id)
         {
             var account = _Account.Find(a => a.Id == id);
+            return false;
         }
 
         public void Update(Account item)

@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Optimization"
         mc:Ignorable="d"
+        xmlns:oxy="http://oxyplot.org/wpf" xmlns:viewmodels="clr-namespace:Optimization.ViewModels" xmlns:syncfusion="http://schemas.syncfusion.com/wpf" d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowVM}"
         WindowStartupLocation="CenterScreen"    
         Title="Программный комплекс для решения задач оптимизации" Height="750" Width="990">
     <Grid>
@@ -247,10 +248,35 @@
                             </TabItem>
 
                             <TabItem Header="График 2D">
-
+                                <TabItem.Content>
+                                    <oxy:PlotView Model="{Binding Model2D}"/>
+                                </TabItem.Content>
                             </TabItem>
 
                             <TabItem Header="График 3D">
+                                <syncfusion:SfSurfaceChart
+                                    Palette="BlueChrome" WireframeStroke ="Black"  
+                                    ItemsSource="{Binding DataList}"  XBindingPath="Length" 
+                                    YBindingPath="CostPrice" ZBindingPath="Width"  
+                                    EnableZooming="True" EnableRotation="True" Type="Surface" 
+                                    RowSize="{Binding SizeRC}" ColumnSize="{Binding SizeRC}">
+
+                                    <syncfusion:SfSurfaceChart.ColorBar>
+                                        <syncfusion:ChartColorBar ShowLabel="True" DockPosition="Right"/>
+                                    </syncfusion:SfSurfaceChart.ColorBar>
+
+                                    <syncfusion:SfSurfaceChart.XAxis>
+                                        <syncfusion:SurfaceAxis Header="Длина, м"  SmallTicksPerInterval="1" />
+                                    </syncfusion:SfSurfaceChart.XAxis>
+
+                                    <syncfusion:SfSurfaceChart.YAxis>
+                                        <syncfusion:SurfaceAxis Header="Себестоимость, у.е." SmallTicksPerInterval="1"/>                                       
+                                    </syncfusion:SfSurfaceChart.YAxis>
+
+                                    <syncfusion:SfSurfaceChart.ZAxis >
+                                        <syncfusion:SurfaceAxis Header="Ширина м" SmallTicksPerInterval="1"/>
+                                    </syncfusion:SfSurfaceChart.ZAxis>
+                                </syncfusion:SfSurfaceChart>
 
                             </TabItem>
                         </TabControl>

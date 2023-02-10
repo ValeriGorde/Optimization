@@ -17,14 +17,17 @@ namespace Optimization.ViewModels
         ApplicationContext context;
         AccountCRUD crud;
         MethodCRUD crudMethod;
+        ParameterCRUD crudParam;
         private readonly Window adminWindow;
         public AdminWindowVM(Window _adminWindow)
         {
             context = new ApplicationContext();
             crud = new AccountCRUD();
             crudMethod = new MethodCRUD();
+            crudParam = new ParameterCRUD();
             RolesCreate();
-            SetAccountData();
+
+            SetAccountData(); //переименовать
             adminWindow = _adminWindow;
         }
 
@@ -41,6 +44,7 @@ namespace Optimization.ViewModels
             context.OptimizationMethods.Load();
             Account = context.Accounts.ToList();
             Methods = context.OptimizationMethods.ToList();
+            Parameters = context.Parameters.ToList();
         }
 
         #region Account
@@ -137,7 +141,7 @@ namespace Optimization.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show("Заполните все поля, чтобы добавить новго пользователя!", "Ошибка добавления пользователя");
+                        MessageBox.Show("Заполните все поля, чтобы добавить нового пользователя!", "Ошибка добавления пользователя");
                     }
                 });
             }
@@ -168,12 +172,10 @@ namespace Optimization.ViewModels
                             crud.Delete(SelectedAccount.Id);
                         }
                         SetAccountData();
-
-
                     }
                     else
                     {
-                        MessageBox.Show("Заполните все поля, чтобы добавить новго пользователя!", "Ошибка удаления пользователя");
+                        MessageBox.Show("Выберите пользователя, которого необходимо удалить!", "Ошибка удаления пользователя");
                     }
                 });
             }
@@ -194,7 +196,7 @@ namespace Optimization.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show("Заполните все поля, чтобы добавить новго пользователя!", "Ошибка удаления пользователя");
+                        MessageBox.Show("Заполните все поля, чтобы изменить данные пользователя!", "Ошибка изменения данных пользователя");
                     }
                 });
             }
@@ -262,8 +264,15 @@ namespace Optimization.ViewModels
                     if (NewMethodName != null)
                     {
                         var method = new OptimizationMethod { Name = NewMethodName, Realization = HaveRealization };
-                        crudMethod.Create(method);
-                        SetAccountData();
+                        if (!crudMethod.Read(method.Id)) 
+                        {
+                            crudMethod.Create(method);
+                            SetAccountData();
+                        }
+                        else 
+                        {
+                            MessageBox.Show("Данный метод уже cуществует!", "Ошибка добавления метода");
+                        }
                     }
                     else
                     {
@@ -309,7 +318,7 @@ namespace Optimization.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show("Не все поля заполнены!", "Ошибка удаления метода");
+                        MessageBox.Show("Не все поля заполнены!", "Ошибка обновления метода");
                     }
                 });
             }
@@ -319,8 +328,52 @@ namespace Optimization.ViewModels
 
         #region Parameter
 
-        private OptimizationMethod _selectedParameter;
-        public OptimizationMethod SelectedParameter
+        private List<Parameter> _parameters;
+        public List<Parameter> Parameters 
+        {
+            get => _parameters;
+            set 
+            {
+                _parameters = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _newParamName;
+        public string NewParamName 
+        {
+            get { return _newParamName; }
+            set 
+            {
+                _newParamName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _newParamSymbol;
+        public string NewParamSymbol
+        {
+            get { return _newParamSymbol; }
+            set
+            {
+                _newParamSymbol = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _newParamVariant;
+        public string NewParamVariant
+        {
+            get { return _newParamVariant; }
+            set
+            {
+                _newParamVariant = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Parameter _selectedParameter;
+        public Parameter SelectedParameter
         {
             get => _selectedParameter;
             set
@@ -330,10 +383,74 @@ namespace Optimization.ViewModels
 
                 if (SelectedParameter != null)
                 {
-                    NewParamName = _selectedMethod.Name;
-                    NewParamSymbol = _selectedMethod.Realization;
-                    NewParamVariant = _selectedParameter.
+                    NewParamName = _selectedParameter.Name;
+                    NewParamSymbol = _selectedParameter.Symbol;
+                    NewParamVariant = _selectedParameter.Variant;
                 }
+            }
+        }
+
+        private RelayCommand _addParameter;
+        public RelayCommand AddParameter
+        {
+            get
+            {
+                return _addParameter ??= new RelayCommand(x =>
+                {
+
+                    if (NewParamName != null && NewParamSymbol != null && NewParamVariant != null)
+                    {
+                        var param = new Parameter { Name = NewParamName, Symbol = NewParamSymbol, Variant = NewParamVariant };
+                        crudParam.Create(param);
+                        SetAccountData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Заполните все поля, чтобы добавить новый параметр!", "Ошибка добавления параметра");
+                    }
+                });
+            }
+        }
+
+        private RelayCommand _removeParameter;
+        public RelayCommand RemoveParameter
+        {
+            get
+            {
+                return _removeParameter ??= new RelayCommand(x =>
+                {
+                    if (NewParamName != null && NewParamSymbol != null && NewParamVariant !=null)
+                    {
+                        crudParam.Delete(SelectedParameter.Id);
+                        SetAccountData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Выберите параметр для удаления!", "Ошибка удаления параметра");
+                    }
+                });
+            }
+        }
+
+        private RelayCommand _updateParameter;
+        public RelayCommand UpdateParameter
+        {
+            get
+            {
+                return _updateParameter ??= new RelayCommand(x =>
+                {
+                    if (NewParamName != null && NewParamSymbol != null && NewParamVariant != null)
+                    {
+                        var param = new Parameter { Id = SelectedParameter.Id, Name = NewParamName, Symbol = NewParamSymbol, Variant = NewParamVariant };
+
+                        crudParam.Update(param);
+                        SetAccountData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Не все поля заполнены!", "Ошибка обновления параметра");
+                    }
+                });
             }
         }
         #endregion
