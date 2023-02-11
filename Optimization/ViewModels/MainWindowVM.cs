@@ -25,16 +25,17 @@ namespace Optimization.ViewModels
         {
             mainWindow = _mainWindow;
             context = new ApplicationContext(); //привязка к бд
+            SetData();
+        }
 
-            Methods = new List<string>();
-            Methods.Add("Метод Бокса");
-            Methods.Add("Метод сканирования");
-
-            Variants = new List<string>();
-            Variants.Add("Вариант 3"); //брать из бд (задание метода)
+        public void SetData() 
+        {
+            Variants = context.Assignments.ToList();
+            Methods = context.OptimizationMethods.ToList();
         }
 
         #region Params
+
 
         private InputParameters _parameters = new InputParameters { Alpha = 1, Beta = 1, Gamma = 1, H = 9, N = 10, LMin = 1, LMax = 15, SMin = 1, SMax = 12, Price = 100, LSSum = 10, Epsilon = 0.01 };
         public InputParameters Parameters
@@ -201,8 +202,8 @@ namespace Optimization.ViewModels
             }
         }
 
-        private List<string> _variants;
-        public List<string> Variants
+        private List<Assignment> _variants;
+        public List<Assignment> Variants
         {
             get => _variants;
             set
@@ -223,8 +224,8 @@ namespace Optimization.ViewModels
             }
         }
 
-        private List<string> _methods;
-        public List<string> Methods
+        private List<OptimizationMethod> _methods;
+        public List<OptimizationMethod> Methods
         {
             get => _methods;
             set
@@ -256,7 +257,7 @@ namespace Optimization.ViewModels
                 });
             }
         }
-
+                        
         private RelayCommand? _about;
         public RelayCommand About
         {

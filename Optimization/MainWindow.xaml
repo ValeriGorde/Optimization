@@ -56,12 +56,12 @@
 
                             <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
                                 <TextBlock Text="Вариант:" Margin="20 0"/>
-                                <ComboBox SelectedItem="{Binding CurrentVariant}" ItemsSource="{Binding Variants}" Width="240"/>
+                                <ComboBox SelectedItem="{Binding CurrentVariant}" ItemsSource="{Binding Variants}" Width="240" SelectedValuePath="Name" DisplayMemberPath="Name"/>
                             </StackPanel>
 
                             <StackPanel Margin="0 10 0 0" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
                                 <TextBlock Text="Метод:" Margin="20 0"/>
-                                <ComboBox SelectedItem="{Binding CurrentMethod}" ItemsSource="{Binding Methods}" Width="250"/>
+                                <ComboBox SelectedItem="{Binding CurrentMethod}" ItemsSource="{Binding Methods}" Width="250" SelectedValuePath="Name" DisplayMemberPath="Name"/>
                             </StackPanel>
                         </Grid>
                     </GroupBox>

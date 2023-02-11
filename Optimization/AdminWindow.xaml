@@ -41,9 +41,9 @@
                         <DataGrid AutoGenerateColumns="False" IsReadOnly="True" SelectedItem="{Binding SelectedAccount}" ItemsSource= "{Binding Account}" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{Binding Id}" Header="ID" Width="SizeToHeader" />
-                                <DataGridTextColumn Binding="{Binding Login}" Header="Логин" Width="140"/>
-                                <DataGridTextColumn Binding="{Binding Password}" Header="Пароль" Width="140"/>
-                                <DataGridTextColumn Binding="{Binding Role}" Header="Роль" Width="140"/>
+                                <DataGridTextColumn Binding="{Binding Login}" Header="Логин" Width="*"/>
+                                <DataGridTextColumn Binding="{Binding Password}" Header="Пароль" Width="*"/>
+                                <DataGridTextColumn Binding="{Binding Role}" Header="Роль" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
 
@@ -93,10 +93,16 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <DataGrid SelectedItem="{Binding SelectedAssignment}" ItemsSource= "{Binding Assignments}" AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
+                        <DataGrid SelectedItem="{Binding SelectedAssignment}" ItemsSource= "{Binding Assignments}" ScrollViewer.CanContentScroll="False" AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{Binding Name}" Header="Наименование" Width="0.5*" />
-                                <DataGridTextColumn Binding="{Binding Description}"  Header="Описание" Width="0.5*"/>
+                                <DataGridTextColumn Binding="{Binding Description}" Header="Описание"  Width="0.5*">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>                                    
+                                </DataGridTextColumn>
                             </DataGrid.Columns>
                         </DataGrid>
 
@@ -185,7 +191,7 @@
                     </Grid>
                 </TabItem>
 
-                <TabItem  Header="Параметры" Width="160" Height="60">
+                <TabItem  Header="Параметры" Width="170" Height="60">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1.9*"/>
@@ -194,7 +200,7 @@
 
                         <DataGrid SelectedItem="{Binding SelectedParameter}" ItemsSource= "{Binding Parameters}" AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" GridLinesVisibility="Vertical" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Id}" Header="ID" Width="SizeToHeader"/>
+                                <DataGridTextColumn Binding="{Binding Id}" Header="ID" Width="0.2*"/>
                                 <DataGridTextColumn Binding="{Binding Name}" Header="Наименование" Width="*"/>
                                 <DataGridTextColumn Binding="{Binding Symbol}" Header="Обозначение" Width="SizeToHeader"/>
                                 <!--<DataGridTextColumn Binding="{Binding Variant}" Header="Вариант задания" Width="*" />-->
@@ -247,7 +253,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{Binding Assignment.Name}" Header="Задача" Width="*"/>
                                 <DataGridTextColumn Binding="{Binding Parameter.Name}" Header="Параметр" Width="*"/>
-                                <DataGridTextColumn Binding="{Binding Value}" Header="Значение" Width="*"/> 
+                                <DataGridTextColumn Binding="{Binding Value}" Header="Значение" Width="0.5*"/> 
                             </DataGrid.Columns>
                         </DataGrid>
 
