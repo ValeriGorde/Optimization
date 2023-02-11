@@ -13,8 +13,11 @@ namespace Optimization.DB_EF
         public DbSet<Account> Accounts { get; set; }
         public DbSet<OptimizationMethod> OptimizationMethods { get; set; }
         public DbSet<Parameter> Parameters { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
+        public DbSet<AssignmentParameter> AssignmentParameters { get; set; }
         public ApplicationContext() 
         {
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 

@@ -6,7 +6,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Optimization"
         mc:Ignorable="d"
-        xmlns:oxy="http://oxyplot.org/wpf" xmlns:viewmodels="clr-namespace:Optimization.ViewModels" xmlns:syncfusion="http://schemas.syncfusion.com/wpf" d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowVM}"
+        xmlns:oxy="http://oxyplot.org/wpf" xmlns:viewmodels="clr-namespace:Optimization.ViewModels" xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+       
         WindowStartupLocation="CenterScreen"    
         Title="Программный комплекс для решения задач оптимизации" Height="750" Width="990">
     <Grid>

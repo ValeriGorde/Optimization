@@ -27,7 +27,7 @@ namespace Optimization.CRUD
 
         public void Delete(int id)
         {
-            var param = _Parameter.FirstOrDefault(p => p.Id == id);
+            var param = _Parameter.Find(p => p.Id == id);
 
             context.Parameters.Remove(param);
             context.SaveChanges();
@@ -43,14 +43,18 @@ namespace Optimization.CRUD
 
         public void Update(Parameter item)
         {
-            var param = _Parameter.FirstOrDefault(p => p.Id == item.Id);
+            var param = context.Parameters.FirstOrDefault(p => p.Id == item.Id);
             param.Id = item.Id;
             param.Name = item.Name;
-            param.Variant = item.Variant;
             param.Symbol = item.Symbol;
 
             context.Update(param);
             context.SaveChanges();
+        }
+
+        public void Delete(Parameter item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

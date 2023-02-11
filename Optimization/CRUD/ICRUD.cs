@@ -32,5 +32,11 @@ namespace Optimization.CRUD
         /// </summary>
         /// <param name="id"></param>
         public void Delete(int id);
+
+        /// <summary>
+        /// Удаление элемента
+        /// </summary>
+        /// <param name="item"></param>
+        public void Delete(T item);
     }
 }

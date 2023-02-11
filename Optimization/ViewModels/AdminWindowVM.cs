@@ -12,12 +12,16 @@ using WPF_MVVM_Classes;
 
 namespace Optimization.ViewModels
 {
+     //<!--d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowVM}-->
     internal class AdminWindowVM : ViewModelBase
     {
         ApplicationContext context;
         AccountCRUD crud;
         MethodCRUD crudMethod;
         ParameterCRUD crudParam;
+        AssignmentCRUD crudAssignmt;
+        AssignmentParameterCRUD crudAssignmtParam;
+
         private readonly Window adminWindow;
         public AdminWindowVM(Window _adminWindow)
         {
@@ -25,8 +29,10 @@ namespace Optimization.ViewModels
             crud = new AccountCRUD();
             crudMethod = new MethodCRUD();
             crudParam = new ParameterCRUD();
-            RolesCreate();
+            crudAssignmt = new AssignmentCRUD();
+            crudAssignmtParam = new AssignmentParameterCRUD();
 
+            RolesCreate();
             SetAccountData(); //переименовать
             adminWindow = _adminWindow;
         }
@@ -45,6 +51,8 @@ namespace Optimization.ViewModels
             Account = context.Accounts.ToList();
             Methods = context.OptimizationMethods.ToList();
             Parameters = context.Parameters.ToList();
+            Assignments = context.Assignments.ToList();
+            AssignmntParams = context.AssignmentParameters.ToList();
         }
 
         #region Account
@@ -201,6 +209,20 @@ namespace Optimization.ViewModels
                 });
             }
         }
+
+        private RelayCommand _removeAllAccount;
+        public RelayCommand RemoveAllAccount
+        {
+            get
+            {
+                return _removeAllAccount ??= new RelayCommand(x =>
+                {
+                    NewLogin = "";
+                    NewPassword = "";
+                    NewRole = null;
+                });
+            }
+        }
         #endregion
 
         #region Method
@@ -264,7 +286,7 @@ namespace Optimization.ViewModels
                     if (NewMethodName != null)
                     {
                         var method = new OptimizationMethod { Name = NewMethodName, Realization = HaveRealization };
-                        if (!crudMethod.Read(method.Id)) 
+                        if (crudMethod.Read(method.Id)) 
                         {
                             crudMethod.Create(method);
                             SetAccountData();
@@ -324,6 +346,18 @@ namespace Optimization.ViewModels
             }
         }
 
+        private RelayCommand _removeAllMethod;
+        public RelayCommand RemoveAllMethod
+        {
+            get
+            {
+                return _removeAllMethod ??= new RelayCommand(x =>
+                {
+                    NewMethodName = "";
+                    HaveRealization = false;
+                });
+            }
+        }
         #endregion
 
         #region Parameter
@@ -361,17 +395,6 @@ namespace Optimization.ViewModels
             }
         }
 
-        private string _newParamVariant;
-        public string NewParamVariant
-        {
-            get { return _newParamVariant; }
-            set
-            {
-                _newParamVariant = value;
-                OnPropertyChanged();
-            }
-        }
-
         private Parameter _selectedParameter;
         public Parameter SelectedParameter
         {
@@ -385,7 +408,6 @@ namespace Optimization.ViewModels
                 {
                     NewParamName = _selectedParameter.Name;
                     NewParamSymbol = _selectedParameter.Symbol;
-                    NewParamVariant = _selectedParameter.Variant;
                 }
             }
         }
@@ -398,9 +420,9 @@ namespace Optimization.ViewModels
                 return _addParameter ??= new RelayCommand(x =>
                 {
 
-                    if (NewParamName != null && NewParamSymbol != null && NewParamVariant != null)
+                    if (NewParamName != null && NewParamSymbol != null)
                     {
-                        var param = new Parameter { Name = NewParamName, Symbol = NewParamSymbol, Variant = NewParamVariant };
+                        var param = new Parameter { Name = NewParamName, Symbol = NewParamSymbol};
                         crudParam.Create(param);
                         SetAccountData();
                     }
@@ -419,7 +441,7 @@ namespace Optimization.ViewModels
             {
                 return _removeParameter ??= new RelayCommand(x =>
                 {
-                    if (NewParamName != null && NewParamSymbol != null && NewParamVariant !=null)
+                    if (NewParamName != null && NewParamSymbol != null)
                     {
                         crudParam.Delete(SelectedParameter.Id);
                         SetAccountData();
@@ -439,9 +461,9 @@ namespace Optimization.ViewModels
             {
                 return _updateParameter ??= new RelayCommand(x =>
                 {
-                    if (NewParamName != null && NewParamSymbol != null && NewParamVariant != null)
+                    if (NewParamName != null && NewParamSymbol != null)
                     {
-                        var param = new Parameter { Id = SelectedParameter.Id, Name = NewParamName, Symbol = NewParamSymbol, Variant = NewParamVariant };
+                        var param = new Parameter { Id = SelectedParameter.Id, Name = NewParamName, Symbol = NewParamSymbol};
 
                         crudParam.Update(param);
                         SetAccountData();
@@ -450,6 +472,291 @@ namespace Optimization.ViewModels
                     {
                         MessageBox.Show("Не все поля заполнены!", "Ошибка обновления параметра");
                     }
+                });
+            }
+        }
+
+        private RelayCommand _removeAllParameter;
+        public RelayCommand RemoveAllParameter
+        {
+            get
+            {
+                return _removeAllParameter ??= new RelayCommand(x =>
+                {
+                    NewParamName = "";
+                    NewParamSymbol = "";
+                });
+            }
+        }
+        #endregion
+
+        #region Assignment
+
+        private List<Assignment> _assignments;
+        public List<Assignment> Assignments
+        {
+            get => _assignments;
+            set
+            {
+                _assignments = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Assignment _selectedAssignment;
+        public Assignment SelectedAssignment
+        {
+            get => _selectedAssignment;
+            set
+            {
+                _selectedAssignment = value;
+                OnPropertyChanged();
+
+                if (SelectedAssignment != null)
+                {
+                    NewAssignmtName = _selectedAssignment.Name;
+                    NewAssignmtDescription = _selectedAssignment.Description;
+                }
+            }
+        }
+
+        private string _newAssignmtName;
+        public string NewAssignmtName
+        {
+            get { return _newAssignmtName; }
+            set 
+            {
+                _newAssignmtName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _newAssignmtDescription;
+        public string NewAssignmtDescription
+        {
+            get { return _newAssignmtDescription; }
+            set 
+            {
+                _newAssignmtDescription = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private RelayCommand _addAssignment;
+        public RelayCommand AddAssignment
+        {
+            get
+            {
+                return _addAssignment ??= new RelayCommand(x =>
+                {
+
+                    if (NewAssignmtName != null && NewAssignmtDescription != null)
+                    {
+                        var assignmt = new Assignment {  Name = NewAssignmtName, Description = NewAssignmtDescription};
+                        crudAssignmt.Create(assignmt);
+                        SetAccountData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Заполните все поля, чтобы добавить новое задание!", "Ошибка добавления задания");
+                    }
+                });
+            }
+        }
+
+        private RelayCommand _removeAssignment;
+        public RelayCommand RemoveAssignment
+        {
+            get
+            {
+                return _removeAssignment ??= new RelayCommand(x =>
+                {
+                    if (NewAssignmtName != null && NewAssignmtDescription != null)
+                    {
+                        crudAssignmt.Delete(SelectedAssignment.Id);
+                        SetAccountData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Выберите задание для удаления!", "Ошибка удаления задания");
+                    }
+                });
+            }
+        }
+
+        private RelayCommand _updateAssignment;
+        public RelayCommand UpdateAssignment
+        {
+            get
+            {
+                return _updateAssignment ??= new RelayCommand(x =>
+                {
+                    if (NewAssignmtName != null && NewAssignmtDescription != null)
+                    {
+                        var assignmt = new Assignment { Id = SelectedAssignment.Id, Name = NewAssignmtName, Description = NewAssignmtDescription };
+                        crudAssignmt.Update(assignmt);
+                        SetAccountData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Не все поля заполнены!", "Ошибка обновления задания");
+                    }
+                });
+            }
+        }
+
+        private RelayCommand _removeAllAssignment;
+        public RelayCommand RemoveAllAssignment
+        {
+            get
+            {
+                return _removeAllAssignment ??= new RelayCommand(x =>
+                {
+                    NewAssignmtName = "";
+                    NewAssignmtDescription = "";
+                });
+            }
+        }
+
+        #endregion
+
+        #region AssignmentParam
+
+        private List<AssignmentParameter> _assignmntParams;
+        public List<AssignmentParameter> AssignmntParams
+        {
+            get => _assignmntParams;
+            set
+            {
+                _assignmntParams = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private AssignmentParameter _selectedAssignmntParam;
+        public AssignmentParameter SelectedAssignmntParam
+        {
+            get => _selectedAssignmntParam;
+            set
+            {
+                _selectedAssignmntParam = value;
+                OnPropertyChanged();
+
+                if (SelectedAssignmntParam != null)
+                {
+                    NewAssignmntParamName = _selectedAssignmntParam.Parameter;
+                    NewAssignmntParamTask = _selectedAssignmntParam.Assignment;
+                    NewAssignmntParamValue = _selectedAssignmntParam.Value;
+                }
+            }
+        }
+
+        private Assignment _newAssignmntParamTask;
+        public Assignment NewAssignmntParamTask 
+        {
+            get => _newAssignmntParamTask;
+            set 
+            {
+                _newAssignmntParamTask = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _newAssignmntParamValue;
+        public double NewAssignmntParamValue
+        {
+            get => _newAssignmntParamValue;
+            set
+            {
+                _newAssignmntParamValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Parameter _newAssignmntParamName;
+        public Parameter NewAssignmntParamName
+        {
+            get => _newAssignmntParamName;
+            set
+            {
+                _newAssignmntParamName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private RelayCommand _addAssignmntParam;
+        public RelayCommand AddAssignmntParam
+        {
+            get
+            {
+                return _addAssignmntParam ??= new RelayCommand(x =>
+                {
+                    if (NewAssignmntParamName != null && NewAssignmntParamTask != null)
+                    {
+                        var assignmntParam = new AssignmentParameter { AssignmentId = NewAssignmntParamTask.Id, ParameterId = NewAssignmntParamName.Id, Value = NewAssignmntParamValue};
+                        crudAssignmtParam.Create(assignmntParam);
+                        SetAccountData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Заполните все поля, чтобы добавить новое значение параметра!", "Ошибка добавления значения параметра");
+                    }
+                });
+            }
+        }
+
+        private RelayCommand _removeAssignmntParam;
+        public RelayCommand RemoveAssignmntParam
+        {
+            get
+            {
+                return _removeAssignmntParam ??= new RelayCommand(x =>
+                {
+                    if (SelectedAssignmntParam != null)
+                    {
+                        crudAssignmtParam.Delete(SelectedAssignmntParam.Id);
+                        SetAccountData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Выберите значение параметра для удаления!", "Ошибка удаления значения параметра");
+                    }
+                });
+            }
+        }
+
+        private RelayCommand _updateAssignmntParam;
+        public RelayCommand UpdateAssignmntParam
+        {
+            get
+            {
+                return _updateAssignmntParam ??= new RelayCommand(x =>
+                {
+                    if (SelectedAssignmntParam != null)
+                    {
+                        var assignmntParam = new AssignmentParameter { AssignmentId = NewAssignmntParamTask.Id, ParameterId = NewAssignmntParamName.Id, Value = NewAssignmntParamValue };
+
+                        crudAssignmtParam.Update(assignmntParam);
+                        SetAccountData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Не все поля заполнены!", "Ошибка обновления значения параметра");
+                    }
+                });
+            }
+        }
+
+        private RelayCommand _removeAllAssignmntParam;
+        public RelayCommand RemoveAllAssignmntParam
+        {
+            get
+            {
+                return _removeAllAssignmntParam ??= new RelayCommand(x =>
+                {
+                    NewAssignmntParamName = null;
+                    NewAssignmntParamTask = null;
+                    NewAssignmntParamValue = 0.0; 
                 });
             }
         }

@@ -46,10 +46,15 @@ namespace Optimization.CRUD
 
         public void Delete(int id)
         {
-            var method = _Method.FirstOrDefault(m => m.Id == id);
+            var method = _Method.Find(m => m.Id == id);
 
             context.Remove(method);
             context.SaveChanges();
+        }
+
+        public void Delete(OptimizationMethod item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

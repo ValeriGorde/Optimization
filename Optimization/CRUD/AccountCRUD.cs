@@ -46,5 +46,10 @@ namespace Optimization.CRUD
             context.Accounts.Update(account);
             context.SaveChanges();
         }
+
+        public void Delete(Account item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

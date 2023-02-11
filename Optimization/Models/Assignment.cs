@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Optimization.Models
 {
-    internal class Task
+    internal class Assignment
     {
         [Key]
         public int Id { get; set; }
         public string? Name { get; set; }
-        public string? Description { get; set; }
-
+        public string Description { get; set; }
+        public List<AssignmentParameter> Parameters { get; set; } = new List<AssignmentParameter>();
     }
 }
