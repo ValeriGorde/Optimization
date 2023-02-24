@@ -13,6 +13,8 @@ namespace Optimization.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Symbol { get; set; }
+        //public int InputParamId { get; set; }
+        //public InputParameter InputParameter { get; set; }
         public List<AssignmentParameter> Parameters { get; set; } = new List<AssignmentParameter>();
     }
 }

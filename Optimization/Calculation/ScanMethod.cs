@@ -10,7 +10,7 @@ namespace Optimization.Calculation
 {
     internal class ScanMethod
     {
-        InputParameters inputParameters;
+        InputParameter inputParameters;
         
         public int CalculationCount { get; private set; }
         private double step;
@@ -18,7 +18,7 @@ namespace Optimization.Calculation
         public double r = 2;
         public double n = 2;
 
-        public ScanMethod(InputParameters _inputParameters) 
+        public ScanMethod(InputParameter _inputParameters) 
         {
             inputParameters = _inputParameters;
         }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Optimization.Models
 {
-    internal class InputParameters
+    internal class InputParameter
     {
         [Key]
         public int Id { get; set; }
@@ -23,5 +23,7 @@ namespace Optimization.Models
         public double Price { get; set; }
         public double Epsilon { get; set; }
         public double LSSum { get; set; }
+        public List<Parameter> Parameters { get; set; } = new List<Parameter>();
+
     }
 }

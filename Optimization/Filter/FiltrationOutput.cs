@@ -10,7 +10,7 @@ namespace Optimization.Filter
 {
     internal class FiltrationOutput
     {
-        public static OutputParamsArr[] CalcEqvation(InputParameters inputParameters)
+        public static OutputParamsArr[] CalcEqvation(InputParameter inputParameters)
         {
 
             int sizeArray = (int)((inputParameters.LMax - inputParameters.LMin) * (inputParameters.SMax - inputParameters.SMin) / (0.1 * 0.1) + 1);

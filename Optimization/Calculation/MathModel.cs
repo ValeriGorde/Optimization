@@ -9,15 +9,15 @@ namespace Optimization.Calculation
 {
     internal class MathModel
     {
-        InputParameters inputParameters;
-        public MathModel(InputParameters _inputParameters) 
+        InputParameter inputParameters;
+        public MathModel(InputParameter _inputParameters) 
         {
             inputParameters = _inputParameters;
         }
 
         public double MainModel(double length, double width)
         {
-            return inputParameters.Alpha * (Math.Pow(length - width, 2) + inputParameters.Beta * 1 / inputParameters.H * Math.Pow(width + length - inputParameters.Gamma * inputParameters.N, 2));
+            return inputParameters.Price*inputParameters.Alpha * (Math.Pow(length - width, 2) + inputParameters.Beta * 1 / inputParameters.H * Math.Pow(width + length - inputParameters.Gamma * inputParameters.N, 2));
         }
 
         public bool Conditions(double length, double width)
